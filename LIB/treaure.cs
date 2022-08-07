@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using System.Drawing;
 using MongoDB.Driver;
+using MongoDB.Bson;
 
 namespace treasure.privacy
 {
@@ -46,7 +47,7 @@ namespace treasure.privacy
             app_key_model.exp_date = expireDate;
             return app_key_model;
         }
-        public void CreateApiKeyRefference(DATABASES database, CREDENTIALS credentials)
+        public void CreateApiKeyRefference(DATABASES database, CREDENTIALS credentials, APP_KEY_MODEL model)
         {
             if (credentials.mongo_atlas_connection_string != null)
             {
@@ -57,6 +58,10 @@ namespace treasure.privacy
                     {
                         MongoClient dbClient = new MongoClient(atlas_connection_string);
                         Console.WriteLine("Successfuly connected to MONGO ATLAS, for authentication keys");
+                        var db = dbClient.GetDatabase("keys");
+                        var collection = db.GetCollection<APP_KEY_MODEL>("key");
+
+                        collection.InsertOne(new APP_KEY_MODEL { key = model.key, exp_date = model.exp_date});
                     }
                     catch ( Exception e ) 
                     {
@@ -127,7 +132,12 @@ namespace treasure.privacy
             string input = "...";
             appKey.CREDENTIALS creds = new CREDENTIALS();
             creds.mongo_atlas_connection_string = "bob";
-            appKey.CreateApiKeyRefference(DATABASES.mongoAtlas, creds);
+
+            appKey.APP_KEY_MODEL model = new APP_KEY_MODEL();
+            model.exp_date = "000";
+            model.key = appKey.generateKey();
+
+            appKey.CreateApiKeyRefference(DATABASES.mongoAtlas, creds, model);
             appKey.createPopup(ref input, 11);
         }
     }
