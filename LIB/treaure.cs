@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Drawing;
+using MongoDB.Driver;
+
 namespace treasure.privacy
 {
     public class appKey
@@ -15,12 +17,19 @@ namespace treasure.privacy
         }
         public class CREDENTIALS
         {
-            public string dbUsername;
-            public string dbPassword;
+            public string mongo_atlas_connection_string;
         }
         public void CreateApiKeyRefference(DATABASES database, CREDENTIALS credentials)
         {
-
+            if (credentials.mongo_atlas_connection_string != null)
+            {
+                string atlas_connection_string = credentials.mongo_atlas_connection_string;
+                if(database == DATABASES.mongoAtlas)
+                {
+                    MongoClient dbClient = new MongoClient(atlas_connection_string);
+                    Console.WriteLine("Successfuly connected to MONGO ATLAS, for authentication keys");
+                }
+            }
         }
        public static DialogResult createPopup(ref string input, int codeLength)
         {
@@ -83,8 +92,7 @@ namespace treasure.privacy
             appKey appKey = new appKey();
             string input = "...";
             appKey.CREDENTIALS creds = new CREDENTIALS();
-            creds.dbUsername = "bob";
-            creds.dbPassword = "is";
+            creds.mongo_atlas_connection_string = "bob";
             appKey.CreateApiKeyRefference(DATABASES.mongoAtlas, creds);
             appKey.createPopup(ref input, 11);
         }
