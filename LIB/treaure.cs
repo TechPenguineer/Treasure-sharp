@@ -19,6 +19,20 @@ namespace treasure.privacy
         {
             public string mongo_atlas_connection_string;
         }
+        public string generateKey()
+        {
+            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            var stringChars = new char[8];
+            var random = new Random();
+
+            for (int i = 0; i < stringChars.Length; i++)
+            {
+                stringChars[i] = chars[random.Next(chars.Length)];
+            }
+
+            var finalString = new String(stringChars);
+            return finalString;
+        }
         public void CreateApiKeyRefference(DATABASES database, CREDENTIALS credentials)
         {
             if (credentials.mongo_atlas_connection_string != null)
@@ -26,8 +40,15 @@ namespace treasure.privacy
                 string atlas_connection_string = credentials.mongo_atlas_connection_string;
                 if(database == DATABASES.mongoAtlas)
                 {
-                    MongoClient dbClient = new MongoClient(atlas_connection_string);
-                    Console.WriteLine("Successfuly connected to MONGO ATLAS, for authentication keys");
+                    try
+                    {
+                        MongoClient dbClient = new MongoClient(atlas_connection_string);
+                        Console.WriteLine("Successfuly connected to MONGO ATLAS, for authentication keys");
+                    }
+                    catch ( Exception e ) 
+                    {
+                        Console.WriteLine(e.ToString());
+                    }
                 }
             }
         }
