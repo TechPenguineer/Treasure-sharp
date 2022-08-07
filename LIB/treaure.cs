@@ -44,6 +44,7 @@ namespace treasure.privacy
             APP_KEY_MODEL app_key_model = new APP_KEY_MODEL();
             app_key_model.key = generateKey();
             app_key_model.exp_date = expireDate;
+            return app_key_model;
         }
         public void CreateApiKeyRefference(DATABASES database, CREDENTIALS credentials)
         {
