@@ -33,6 +33,18 @@ namespace treasure.privacy
             var finalString = new String(stringChars);
             return finalString;
         }
+        public class APP_KEY_MODEL
+        {
+            public string key { get; set; }
+            public string exp_date { get; set; }
+        }
+
+        public APP_KEY_MODEL createKey(string expireDate)
+        {
+            APP_KEY_MODEL app_key_model = new APP_KEY_MODEL();
+            app_key_model.key = generateKey();
+            app_key_model.exp_date = expireDate;
+        }
         public void CreateApiKeyRefference(DATABASES database, CREDENTIALS credentials)
         {
             if (credentials.mongo_atlas_connection_string != null)
