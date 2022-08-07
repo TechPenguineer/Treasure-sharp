@@ -5,8 +5,26 @@ namespace treasure.privacy
 {
     public class appKey
     {
-       public static DialogResult createPopup(ref string input, string codeFormat)
+       public void validateKey(string key)
         {
+
+        }
+        public enum DATABASES
+        {
+            mongoAtlas
+        }
+        public class CREDENTIALS
+        {
+            public string dbUsername;
+            public string dbPassword;
+        }
+        public void CreateApiKeyRefference(DATABASES database, CREDENTIALS credentials)
+        {
+
+        }
+       public static DialogResult createPopup(ref string input, int codeLength)
+        {
+           
             int width = 300;
             int height = 100;
             string title = "Activation";
@@ -30,7 +48,6 @@ namespace treasure.privacy
             TextBox textBox = new TextBox();
             textBox.Size = new Size(size.Width - 10, 23);
             textBox.Location = new Point(5, label.Location.Y + 20);
-            textBox.PlaceholderText = codeFormat;
             inputBox.Controls.Add(textBox);
 
             Button okButton = new Button();
@@ -59,11 +76,17 @@ namespace treasure.privacy
         }
 
 
+
+        // TESTING
         public static void Main(string[] args)
         {
             appKey appKey = new appKey();
             string input = "...";
-            appKey.createPopup(ref input, "xxxx-xxxx-xxxx");
+            appKey.CREDENTIALS creds = new CREDENTIALS();
+            creds.dbUsername = "bob";
+            creds.dbPassword = "is";
+            appKey.CreateApiKeyRefference(DATABASES.mongoAtlas, creds);
+            appKey.createPopup(ref input, 11);
         }
     }
 }
